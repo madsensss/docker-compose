@@ -22,7 +22,8 @@ import student.service.StudentService;
 @RequiredArgsConstructor
 public class StudentController {
 
-    private StudentService studentService;
+    private final StudentService studentService;
+    
 
     @GetMapping
     public List<Student> getAllStudents() {

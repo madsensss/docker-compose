@@ -14,7 +14,7 @@ import student.repository.StudentRepository;
 @RequiredArgsConstructor
 public class StudentService {
 
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
