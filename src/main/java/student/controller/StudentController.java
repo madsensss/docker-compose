@@ -24,7 +24,11 @@ public class StudentController {
 
     private final StudentService studentService;
     
-
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "hello";
+    }
+    
     @GetMapping
     public List<Student> getAllStudents() {
         return studentService.getAllStudents();
