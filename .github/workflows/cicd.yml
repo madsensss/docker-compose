@@ -80,6 +80,12 @@ jobs:
             sudo usermod -aG docker $USER
             newgrp docker
           fi
+
+          if ! docker-compose -v > /dev/null 2>&1; then
+          echo "docker-compose not found, installing..."
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          fi
           
           mkdir -p /home/ubuntu/docker
           echo "version: '3.8'
