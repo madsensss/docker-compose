@@ -12,29 +12,29 @@ jobs:
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-      
-    - run: docker buildx build -t app .
+
+    - run: docker buildx build -t first-private-ecr:latest .
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+        aws-region: ap-northeast-2
 
-    - name: Login to Amazon ECR Public
-      id: login-ecr-public
+    - name: Login to Amazon ECR Private
+      id: login-ecr-private
       uses: aws-actions/amazon-ecr-login@v2
       with:
-        registry-type: public
+        registry-type: private
 
-    - name: Build, tag, and push docker image to Amazon ECR Public
+    - name: Build, tag, and push docker image to Amazon ECR Private
       env:
-        REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
+        REGISTRY: 340752831227.dkr.ecr.ap-northeast-2.amazonaws.com
         REGISTRY_ALIAS: ${{ secrets.ECR_PRIVATE_ID }}
-        REPOSITORY: first-ecr
+        REPOSITORY: first-private-ecr
         IMAGE_TAG: latest
       run: |
         aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 340752831227.dkr.ecr.ap-northeast-2.amazonaws.com
-        docker tag first-private-ecr:latest 340752831227.dkr.ecr.ap-northeast-2.amazonaws.com/first-private-ecr:latest
-        docker push 340752831227.dkr.ecr.ap-northeast-2.amazonaws.com/first-private-ecr:latest
+        docker tag first-private-ecr:latest $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
