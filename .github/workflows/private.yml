@@ -30,11 +30,11 @@ jobs:
 
     - name: Build, tag, and push docker image to Amazon ECR Private
       env:
-        REGISTRY: 340752831227.dkr.ecr.ap-northeast-2.amazonaws.com
+        REGISTRY: ${{ secrets.ECR_PRIVATE_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com
         REGISTRY_ALIAS: ${{ secrets.ECR_PRIVATE_ID }}
         REPOSITORY: first-private-ecr
         IMAGE_TAG: latest
       run: |
-        aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 340752831227.dkr.ecr.ap-northeast-2.amazonaws.com
+        aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ secrets.ECR_PRIVATE_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com
         docker tag first-private-ecr:latest $REGISTRY/$REPOSITORY:$IMAGE_TAG
         docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
