@@ -26,7 +26,7 @@ public class StudentController {
     
     @GetMapping("/hello")
     public String sayHello() {
-        return "hello ecs CICD";
+        return "hello ecs CICD ms branch";
     }
     
     @GetMapping
